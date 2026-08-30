@@ -44,3 +44,8 @@ function tabPeople(){setAdmin("people")}
 function tabPosts(){setAdmin("posts")}
 function tabReports(){setAdmin("reports")}
 function tabLogs(){setAdmin("logs")}
+var chatWith=null,chatQuery="";
+function goCreate(){go("create")}
+function goMessages(){chatWith=null;go("messages")}
+function closeChat(){chatWith=null;draw()}
+function startChat(id){if(!id||!me()||id===me().id)return;if(!db.convos)db.convos=[];if(!db.convos.some(function(x){return x.with===id})){db.convos.push({id:"c"+now(),with:id,msgs:[]});save(db)}chatWith=id;route="messages";sheet=null;draw()}
