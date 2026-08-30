@@ -91,7 +91,7 @@ function mergeUsers(a,b){
     var name=String(u.username||"").toLowerCase();
     var o=byId[u.id]||(name?byName[name]:null);
     if(!o){byId[u.id]=u;if(name)byName[name]=u;return}
-    var merged={id:o.id,username:u.username||o.username,display:u.display||o.display,pass:u.pass||o.pass,bio:u.bio||o.bio,h:u.h||o.h,ver:!!(u.ver||o.ver),followers:Math.max(u.followers||0,o.followers||0),following:Math.max(u.following||0,o.following||0),blocked:!!(u.blocked||o.blocked),staff:!!(u.staff||o.staff),shadow:!!(u.shadow||o.shadow),role:u.role||o.role||"member",pic:u.pic||o.pic};
+    var merged={id:o.id,username:u.username||o.username,display:u.display||o.display,pass:u.pass||o.pass,bio:u.bio||o.bio,h:u.h||o.h,ver:!!(u.ver||o.ver),followers:0,following:0,blocked:!!(u.blocked||o.blocked),staff:!!(u.staff||o.staff),shadow:!!(u.shadow||o.shadow),role:u.role||o.role||"member",pic:u.pic||o.pic};
     byId[merged.id]=merged;if(name)byName[name]=merged;
   }
   (a||[]).concat(b||[]).forEach(put);
@@ -109,7 +109,9 @@ function mergePosts(a,b){
     var comments=(o.comments||[]).concat(p.comments||[]);
     var seen={};
     comments=comments.filter(function(c){var k=(c.by||"")+"|"+(c.text||"");if(seen[k])return false;seen[k]=1;return true});
-    m[p.id]={id:p.id,by:p.by||o.by,text:p.text||o.text,img:(p.img&&String(p.img).indexOf("data:")!==0?p.img:o.img)||p.img||o.img,t:Math.max(p.t||0,o.t||0),likes:likes,comments:comments,saved:saved,hidden:!!(p.hidden||o.hidden),pinned:!!(p.pinned||o.pinned),featured:!!(p.featured||o.featured),locked:!!(p.locked||o.locked),views:Math.max(p.views||0,o.views||0)};
+    var imgA=p.img||"",imgB=o.img||"";
+    var img=imgA.indexOf("data:")===0?imgA:(imgB.indexOf("data:")===0?imgB:(imgA||imgB));
+    m[p.id]={id:p.id,by:p.by||o.by,text:p.text||o.text,img:img,t:Math.max(p.t||0,o.t||0),likes:likes,comments:comments,saved:saved,hidden:!!(p.hidden||o.hidden),pinned:!!(p.pinned||o.pinned),featured:!!(p.featured||o.featured),locked:!!(p.locked||o.locked),views:Math.max(p.views||0,o.views||0)};
   });
   Object.keys(m).forEach(function(k){out.push(m[k])});
   out.sort(function(x,y){return (y.t||0)-(x.t||0)});
@@ -122,7 +124,7 @@ function applyRemote(x){
   var sess=db.session,own=db.owner;
   var kicked=union(db.kicked||[],x.kicked||[]);
   var deleted=union(db.deletedPosts||[],x.deletedPosts||[]);
-  db.users=mergeUsers(db.users,x.users).filter(function(u){return kicked.indexOf(u.id)<0});
+  db.users=mergeUsers(db.users,x.users).filter(function(u){return kicked.indexOf(u.id)<0&&!(u&&["you","nova","milo","rio","iris","sage"].indexOf(u.id)>=0&&u.id!==sess)});
   db.posts=mergePosts(db.posts,x.posts).filter(function(p){return deleted.indexOf(p.id)<0});
   db.follows=mergeFollows(db.follows,x.follows);
   var localThreads=mergeThreads(db.threads||[],convosToThreads(db.convos||[],sess));
@@ -142,7 +144,11 @@ function applyRemote(x){
   db.owner=own;
   saveLocal(db);
   window.cloudNote="Users, posts and DMs are auto-syncing";
-  if(typeof draw==="function")draw();
+  if(typeof recount==="function")recount();
+  var el=document.activeElement;
+  var typing=el&&(el.tagName==="INPUT"||el.tagName==="TEXTAREA");
+  if(!typing&&typeof draw==="function")draw();
+  else window.needDraw=true;
   return true;
 }
 var cloudId=null;
@@ -262,7 +268,7 @@ window.delP=function(id){if(!db.deletedPosts)db.deletedPosts=[];db.deletedPosts.
 try{
   pullCloud();
   setTimeout(function(){window.cloudReady=true;try{pushCloud()}catch(e){}},1000);
-  setInterval(function(){pullCloud()},3000);
+  setInterval(function(){if(!(document.activeElement&&(document.activeElement.tagName==="INPUT"||document.activeElement.tagName==="TEXTAREA")))pullCloud()},8000);
   document.addEventListener("visibilitychange",function(){if(!document.hidden)pullCloud()});
   window.addEventListener("focus",function(){pullCloud()});
   window.addEventListener("online",function(){pullCloud();pushCloud()});
