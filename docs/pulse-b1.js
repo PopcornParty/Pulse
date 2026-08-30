@@ -9,8 +9,9 @@ function filtered(text){var w=(db.settings.wordFilter||"").split(",").map(functi
 var posting=false;
 function publish(){if(posting)return;var cap=$("#cap");var t=filtered(((cap&&cap.value)||"").trim());if(!t){if($("#errp"))$("#errp").textContent="Write a caption first";return}posting=true;var b=$("#shareBtn");if(b){b.disabled=true;b.textContent="Sharing..."}var f=$("#file");function finish(img){db.posts.unshift({id:"p"+now(),by:me().id,text:t,img:img,t:now(),likes:[],comments:[],saved:[],hidden:false,pinned:false,featured:false,locked:false,views:1});logA("post by @"+me().username);save(db);posting=false;go("home")}if(f&&f.files&&f.files[0]){var r=new FileReader();r.onload=function(){finish(r.result)};r.readAsDataURL(f.files[0])}else finish(pic("new"+now()))}
 function send(){var box=$("#mtext");var t=(box&&box.value||"").trim();if(!t||!chatWith)return;if(!db.convos)db.convos=[];var c=db.convos.find(function(x){return x.with===chatWith});if(!c){c={id:"c"+now(),with:chatWith,msgs:[]};db.convos.push(c)}c.msgs.push({by:me().id,text:t,t:now()});save(db);draw()}
-function unlock(){var v=($("#oc").value||"").trim();if(v===CODE){db.owner=true;logA("owner unlocked");dirty()}else $("#err").textContent="Incorrect code"}
-function verify(id){usr(id).ver=!usr(id).ver;logA("verify @"+usr(id).username);dirty()}
+function unlock(){var box=$("#oc");var v=((box&&box.value)||"").trim();if($("#err")&&v!==CODE){$("#err").textContent="Incorrect code";return}if(v!==CODE)return;ownerOk=true;db.owner=true;logA("owner unlocked");save(db);draw()}
+function verify(id){if(!usr(id))return;usr(id).ver=true;logA("verify @"+usr(id).username);dirty()}
+function unverify(id){if(!usr(id))return;usr(id).ver=false;logA("unverify @"+usr(id).username);dirty()}
 function wipe(id){db.posts=db.posts.filter(function(p){return p.by!==id});logA("wipe posts "+id);dirty()}
 function ban(id){usr(id).blocked=!usr(id).blocked;logA((usr(id).blocked?"ban ":"restore ")+usr(id).username);dirty()}
 function shadow(id){usr(id).shadow=!usr(id).shadow;dirty()}
