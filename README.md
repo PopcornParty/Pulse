@@ -1,41 +1,22 @@
 # Pulse
 
-Pulse is a local-first social platform: feed + stories, private chats, and community servers in one app.
+Mobile-first social app: feed, stories, explore, reels, DMs, profile, and an owner admin panel.
 
-**Repo:** https://github.com/PopcornParty/Pulse
+Live (after GitHub Pages is on):
+https://popcornparty.github.io/Pulse/
 
-## Open the app
-
-1. Download this repository.
-2. Open a terminal in the project folder.
-3. Run:
-
-```bash
-python3 -m http.server 4173 --directory dist
-```
-
-4. Visit http://localhost:4173
-
-## Demo login
-
+## Login
 - Username: `you`
 - Password: `pulse123`
 
-## Owner desk
+## Admin panel
+1. Log in
+2. Tap **You** (bottom right)
+3. Tap the menu icon (top right)
+4. Tap **Owner desk / Admin panel**
+5. Enter code: `FERRARI1`
 
-In the sidebar open **Owner desk** and enter `FERRARI1`.
+From there you can view every member, verify, wipe posts, or suspend an account.
 
-## Publish with GitHub Pages
-
-1. Repo **Settings** → **Pages**
-2. Source: **Deploy from a branch**
-3. Branch: `main` / folder: `/docs`
-4. Save. After a minute the app will be at:
-
-https://popcornparty.github.io/Pulse/
-
-## Project layout
-
-- `src/` — app source
-- `dist/` — bundled app for local running
-- `docs/` — same bundle, used by GitHub Pages
+## Pages setup (iPhone)
+Repo → … → Settings → Pages → Deploy from a branch → `main` / `/docs` → Save
