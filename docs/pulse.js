@@ -1,1 +1,1 @@
-PLACEHOLDER
+(function(){var files=["pulse-a.js?v=9","pulse-b1.js?v=9","pulse-b2.js?v=9"];function next(i){if(i>=files.length)return;var s=document.createElement("script");s.src=files[i];s.onload=function(){next(i+1)};s.onerror=function(){var a=document.getElementById("app");if(a)a.innerHTML="<div class=auth><div class=box><h1>Pulse</h1><p>Could not load "+files[i]+"</p></div></div>"};document.body.appendChild(s)}next(0)})();
