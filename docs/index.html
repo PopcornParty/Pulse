@@ -1,27 +1,74 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-    <meta name="theme-color" content="#0c0e14" />
-    <title>Pulse</title>
-    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-    <link rel="stylesheet" href="./app.css" />
-    <script type="importmap">
-    {
-      "imports": {
-        "react": "https://esm.sh/react@19.2.0",
-        "react/jsx-runtime": "https://esm.sh/react@19.2.0/jsx-runtime",
-        "react-dom/client": "https://esm.sh/react-dom@19.2.0/client"
-      }
-    }
-    </script>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="./app.js"></script>
-  </body>
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+<title>Pulse</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#0c0e14;--soft:#11141c;--card:#171b25;--line:#2a3040;--text:#f3efe6;--muted:#8b90a0;--accent:#ff5a3c;--mint:#7ae7c7}
+*{box-sizing:border-box}html,body,#app{margin:0;min-height:100%;background:var(--bg);color:var(--text);font-family:"Plus Jakarta Sans",system-ui,sans-serif}
+button,input,textarea{font:inherit;color:inherit}button{cursor:pointer}
+.auth{min-height:100dvh;display:grid;place-items:center;padding:20px;background:radial-gradient(700px 320px at 10% -10%,#ff5a3c44,transparent),var(--bg)}
+.box{width:min(420px,100%);background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px}
+.brand{display:flex;gap:10px;align-items:center}.dot{width:32px;height:32px;border-radius:10px;background:radial-gradient(circle at 30% 30%,#ff8a6b,var(--accent))}
+h1,h2{font-family:Fraunces,serif;margin:8px 0}label{display:block;font-size:12px;color:var(--muted);font-weight:700;margin:10px 0 4px}
+input,textarea{width:100%;border:1px solid var(--line);background:var(--soft);border-radius:12px;padding:11px;outline:none}
+.btn{border:0;border-radius:12px;padding:11px 14px;font-weight:700;background:var(--accent);color:#fff;width:100%;margin-top:10px}
+.btn.sec{background:var(--soft);color:var(--text);border:1px solid var(--line);width:auto}
+.row{display:flex;gap:8px;align-items:center}.hint{color:var(--muted);font-size:13px}.err{color:#ff6b7a}
+.shell{display:grid;grid-template-columns:230px 1fr;min-height:100dvh}
+.side{border-right:1px solid var(--line);background:var(--soft);padding:16px 10px;display:flex;flex-direction:column;gap:6px}
+.nav{border:0;background:none;color:var(--muted);text-align:left;padding:11px 12px;border-radius:12px;font-weight:700}
+.nav.on,.nav:hover{background:var(--card);color:var(--text)}
+.main{padding:16px 18px 90px}.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px;margin:0 0 12px}
+.avatar{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;font-weight:800;flex:0 0 auto}
+.who strong{display:flex;gap:6px;align-items:center}.who span{color:var(--muted);font-size:12px}
+.ok{width:14px;height:14px;border-radius:50%;background:var(--mint);color:#04261b;font-size:10px;display:inline-grid;place-items:center}
+.actions button{border:0;background:none;color:var(--text);font-weight:700;padding:8px}
+.stories{display:flex;gap:12px;overflow:auto;padding:6px 0 12px}
+.story{border:0;background:none;color:var(--text);width:72px;font-size:12px;text-align:center}
+.ring{width:64px;height:64px;border-radius:50%;padding:3px;background:conic-gradient(var(--accent),#f0c36a,var(--mint),var(--accent));margin:0 auto 6px}
+.ring>div{height:100%;border-radius:50%;border:3px solid var(--bg)}
+.bottom{display:none;position:fixed;left:0;right:0;bottom:0;background:#11141cee;border-top:1px solid var(--line);padding:8px 0 16px}
+.bottom button{flex:1;border:0;background:none;color:var(--muted);font-weight:800;font-size:11px}
+.chip{border:1px solid var(--line);background:var(--card);border-radius:999px;padding:6px 10px;font-size:12px;font-weight:700}
+.msg{max-width:80%;background:var(--soft);border-radius:14px;padding:8px 10px;margin:6px 0}
+.msg.me{background:#ff5a3c33;margin-left:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}td,th{border-bottom:1px solid var(--line);padding:6px;text-align:left}
+@media(max-width:900px){.shell{grid-template-columns:1fr}.side{display:none}.bottom{display:flex}}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<script>
+const KEY="pulse.one.v1";
+const OWNER="FERRARI1";
+const now=()=>Date.now();
+const ago=t=>{const s=Math.max(1,Math.floor((now()-t)/1000));if(s<60)return s+"s";const m=Math.floor(s/60);if(m<60)return m+"m";const h=Math.floor(m/60);if(h<24)return h+"h";return Math.floor(h/24)+"d"};
+const hue=n=>"hsl("+n+",65%,38%)";
+function login(){const id=document.getElementById("id").value.trim().toLowerCase();const pw=document.getElementById("pw").value;const u=db.users.find(x=>x.username===id||x.email===id);if(!u||u.pass!==pw){document.getElementById("err").textContent="Wrong username or password";return}db.session=u.id;save(db);route="home";render()}
+function signup(){const id=document.getElementById("id").value.trim().toLowerCase().replace(/[^a-z0-9_]/g,"");const pw=document.getElementById("pw").value;if(pw.length<6){document.getElementById("err").textContent="Password needs 6+ characters";return}if(db.users.some(u=>u.username===id)){document.getElementById("err").textContent="Username taken";return}const u={id:"u"+now(),username:id,display:id,email:id+"@pulse.app",pass:pw,bio:"New on Pulse",h:Math.floor(Math.random()*360),ver:false};db.users.push(u);db.session=u.id;save(db);route="home";render()}
+const av=(name,h)=>'<div class="avatar" style="background:'+hue(h)+'">'+(name||"?")[0]+"</div>";
+function seed(){const u=(id,username,display,h,bio,ver=false)=>({id,username,display,email:username+"@pulse.app",pass:"pulse123",bio,h,ver});return{users:[u("you","you","Jordan Hale",18,"Building things."),u("nova","nova","Nova Chen",262,"Astrophotography.",true),u("milo","milo","Milo Park",32,"Chef.",true),u("rio","rio","Rio Alvarez",198,"Indie games.",true),u("iris","iris","Iris Holm",280,"Design systems.",true),u("sage","sage","Sage Okonkwo",148,"Trail maps.")],posts:[{id:"p1",by:"nova",text:"The Perseids were generous last night.",t:now()-7200000,likes:["you","iris"],comments:[{by:"you",text:"What lens?"}],saved:[]},{id:"p2",by:"milo",text:"Sunday loaf. 72% hydration.",t:now()-18000000,likes:["you"],comments:[],saved:["you"]}],convos:[{id:"c1",name:"Nova Chen",msgs:[{by:"nova",text:"Rooftop after midnight?"},{by:"you",text:"I am in."}]}],comms:[{name:"Northlight",msgs:[{by:"nova",text:"Cloud cover drops after midnight."},{by:"you",text:"Bringing cocoa."}]}],session:null,owner:false,notes:[{text:"Nova liked your energy"}]}}
+function load(){try{const r=JSON.parse(localStorage.getItem(KEY));if(r&&r.users)return r}catch(e){}const d=seed();save(d);return d}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+let db=load();let route="home";
+function me(){return db.users.find(u=>u.id===db.session)}
+function user(id){return db.users.find(u=>u.id===id)}
+function go(r){route=r;render()}
+function postCard(p){const a=user(p.by);const liked=p.likes.includes(me().id);return '<article class="card"><div class="row">'+av(a.display,a.h)+'<div class="who"><strong>'+a.display+(a.ver?' <i class="ok">✓</i>':'')+'</strong><span>@'+a.username+' · '+ago(p.t)+'</span></div></div><p>'+p.text+'</p><div class="actions"><button onclick="like(\''+p.id+'\')">'+(liked?'♥':'♡')+' '+p.likes.length+'</button><button onclick="comment(\''+p.id+'\')">💬 '+p.comments.length+'</button></div>'+p.comments.map(c=>'<div class="hint"><b>@'+user(c.by).username+'</b> '+c.text+'</div>').join('')+'</article>'}
+function view(){if(route==='discover')return '<h2>Discover</h2>'+db.users.filter(u=>u.id!==me().id).map(u=>'<div class="card row">'+av(u.display,u.h)+'<div class="who"><strong>'+u.display+'</strong><span>@'+u.username+'</span></div></div>').join('');if(route==='create')return '<div class="card"><h2>Create</h2><textarea id="cap"></textarea><button class="btn" onclick="publish()">Publish</button></div>';if(route==='messages')return '<div class="card"><h2>Messages</h2>'+db.convos[0].msgs.map(m=>'<div class="msg '+(m.by===me().id?'me':'')+'"><b>@'+user(m.by).username+'</b><div>'+m.text+'</div></div>').join('')+'<div class="row"><input id="mtext"/><button class="btn sec" onclick="sendMsg()">Send</button></div></div>';if(route==='communities')return '<div class="card"><h2>Northlight</h2>'+db.comms[0].msgs.map(m=>'<div class="msg"><b>@'+user(m.by).username+'</b> '+m.text+'</div>').join('')+'<div class="row"><input id="ctext"/><button class="btn sec" onclick="sendComm()">Send</button></div></div>';if(route==='notes')return '<div class="card"><h2>Activity</h2>'+db.notes.map(n=>'<div class="hint">'+n.text+'</div>').join('')+'</div>';if(route==='profile'){const u=me();return '<div class="card">'+av(u.display,u.h)+'<h2>'+u.display+'</h2><p>'+u.bio+'</p><textarea id="bio">'+u.bio+'</textarea><button class="btn" onclick="me().bio=document.getElementById(\'bio\').value;save(db);render()">Save</button></div>'+db.posts.filter(p=>p.by===u.id).map(postCard).join('') }if(route==='settings')return '<div class="card"><h2>Settings</h2><button class="btn sec" onclick="localStorage.removeItem(KEY);db=load();render()">Reset demo</button></div>';if(route==='admin'){if(!db.owner)return '<div class="card"><h2>Owner desk</h2><input id="oc"/><button class="btn" onclick="unlock()">Unlock</button></div>';return '<div class="card"><h2>Owner room</h2>'+db.users.map(u=>'<div>@'+u.username+' <button class="btn sec" onclick="kick(\''+u.id+'\')">Wipe posts</button></div>').join('')+'</div>'}return '<div class="stories">'+db.users.map(u=>'<button class="story"><div class="ring"><div style="background:'+hue(u.h)+'"></div></div>'+(u.id===me().id?'You':u.username)+'</button>').join('')+'</div>'+db.posts.map(postCard).join('')}
+function render(){const root=document.getElementById('app');if(!db.session){root.innerHTML='<div class="auth"><div class="box"><div class="brand"><div class="dot"></div><h1>Pulse</h1></div><h2>Pick up the beat.</h2><label>Username</label><input id="id" value="you"/><label>Password</label><input id="pw" type="password" value="pulse123"/><div class="err" id="err"></div><button class="btn" onclick="login()">Log in</button><button class="btn sec" style="width:100%;margin-top:8px" onclick="signup()">Create account</button><p class="hint">Demo: you / pulse123</p></div></div>';return}const M=me();root.innerHTML='<div class="shell"><aside class="side"><div class="brand"><div class="dot"></div><h1>Pulse</h1></div>'+[['home','Home'],['discover','Discover'],['create','Create'],['messages','Messages'],['communities','Communities'],['notes','Activity'],['profile','Profile'],['settings','Settings'],['admin','Owner desk']].map(x=>'<button class="nav '+(route===x[0]?'on':'')+'" onclick="go(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'<div style="margin-top:auto"><div class="row">'+av(M.display,M.h)+'<div class="who"><strong>'+M.display+'</strong><span>@'+M.username+'</span></div></div><button class="nav" onclick="logout()">Log out</button></div></aside><main class="main">'+view()+'</main></div><nav class="bottom">'+[['home','Home'],['discover','Find'],['create','New'],['messages','Chats'],['profile','You']].map(x=>'<button onclick="go(\''+x[0]+'\')">'+x[1]+'</button>').join('')+'</nav>'}
+function logout(){db.session=null;save(db);render()}
+function like(id){const p=db.posts.find(x=>x.id===id);const i=p.likes.indexOf(me().id);if(i>=0)p.likes.splice(i,1);else p.likes.push(me().id);save(db);render()}
+function comment(id){const t=prompt('Comment');if(!t)return;db.posts.find(x=>x.id===id).comments.push({by:me().id,text:t});save(db);render()}
+function publish(){const t=document.getElementById('cap').value.trim();if(!t)return;db.posts.unshift({id:'p'+now(),by:me().id,text:t,t:now(),likes:[],comments:[],saved:[]});save(db);go('home')}
+function sendMsg(){const t=document.getElementById('mtext').value.trim();if(!t)return;db.convos[0].msgs.push({by:me().id,text:t});save(db);render()}
+function sendComm(){const t=document.getElementById('ctext').value.trim();if(!t)return;db.comms[0].msgs.push({by:me().id,text:t});save(db);render()}
+function unlock(){if(document.getElementById('oc').value.trim()===OWNER){db.owner=true;save(db);render()}else alert('Wrong code')}
+function kick(id){db.posts=db.posts.filter(p=>p.by!==id);save(db);render()}
+render();
+</script>
+</body>
 </html>
