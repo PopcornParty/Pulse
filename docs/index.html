@@ -7,83 +7,96 @@
 <title>Pulse</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet"/>
 <style>
-:root{--bg:#000;--card:#111;--line:#232326;--text:#f5f5f7;--muted:#8e8e93;--blue:#0095f6;--red:#ed4956}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-html,body{margin:0;min-height:100%;background:#000;color:var(--text);font-family:Inter,system-ui,sans-serif}
-#app{max-width:430px;margin:0 auto;min-height:100dvh;background:#000;position:relative;padding-bottom:64px}
-button,input,textarea{font:inherit;color:inherit}button{cursor:pointer;background:none;border:0}
-img{display:block;max-width:100%}
-.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 12px;background:rgba(0,0,0,.88);backdrop-filter:blur(18px);border-bottom:1px solid var(--line)}
-.logo{font-family:"Playfair Display",serif;font-size:24px;margin:0;letter-spacing:-.3px}
-.icon{width:38px;height:38px;display:grid;place-items:center;position:relative;color:#fff}
-.pip{position:absolute;top:7px;right:7px;width:7px;height:7px;border-radius:50%;background:var(--red)}
-.stories{display:flex;gap:14px;overflow-x:auto;padding:12px 12px 8px;scrollbar-width:none}
-.stories::-webkit-scrollbar{display:none}
-.st{width:68px;flex:0 0 auto;text-align:center;font-size:11px;color:var(--muted)}
+html,body{margin:0;background:#000;color:#f5f5f7;font-family:Inter,system-ui,sans-serif}
+#app{max-width:430px;margin:0 auto;min-height:100dvh;padding-bottom:70px}
+button,input,textarea{font:inherit;color:inherit;background:none;border:0}
+button{cursor:pointer}img{display:block;max-width:100%}
+.top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:#000;border-bottom:1px solid #222}
+.logo{font-family:"Playfair Display",serif;font-size:24px;margin:0}
+.stories{display:flex;gap:12px;overflow:auto;padding:12px;scrollbar-width:none}
+.st{width:68px;flex:0 0 auto;text-align:center;font-size:11px;color:#8e8e93}
 .ring{width:62px;height:62px;margin:0 auto 5px;padding:2px;border-radius:50%;background:linear-gradient(135deg,#f9ce34,#ee2a7b,#6228d7)}
-.ring.seen{background:#333}
-.ring i{height:100%;border-radius:50%;border:2px solid #000;display:grid;place-items:center;font-weight:800;font-size:16px}
-.post{border-bottom:1px solid var(--line)}
+.ring i{display:block;height:100%;border-radius:50%;border:2px solid #000}
+.post{border-bottom:1px solid #222}
 .ph{display:flex;align-items:center;gap:10px;padding:10px 12px}
-.av{border-radius:50%;display:grid;place-items:center;font-weight:800;flex:0 0 auto;color:#fff}
-.nm{font-size:13px;font-weight:700;line-height:1.25}
-.nm small{display:block;color:var(--muted);font-weight:500}
-.media{background:#0b0b0b;aspect-ratio:1}
-.media img{width:100%;height:100%;object-fit:cover}
-.acts{display:flex;align-items:center;padding:4px 4px 0}
-.acts button{padding:8px}
-.acts .r{margin-left:auto}
-.meta{padding:0 14px 14px;font-size:14px;line-height:1.45}
-.likes{font-weight:700;margin:2px 0 4px}
-.time{color:var(--muted);font-size:11px;margin-top:6px;text-transform:uppercase;letter-spacing:.3px}
-.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(430px,100%);display:flex;background:#000;border-top:1px solid var(--line);padding:6px 0 calc(8px + env(safe-area-inset-bottom));z-index:30}
-.tabbar button{flex:1;color:#8e8e93;padding:6px 0}
-.tabbar button.on{color:#fff}
-.auth{min-height:100dvh;display:grid;place-items:center;padding:28px 22px;padding-bottom:40px}
+.av{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;font-weight:800}
+.nm{font-size:13px;font-weight:700}.nm small{display:block;color:#8e8e93;font-weight:500}
+.media{aspect-ratio:1;background:#111}.media img{width:100%;height:100%;object-fit:cover}
+.acts{display:flex;gap:4px;padding:6px 8px}.acts button{padding:6px 8px;font-size:13px;font-weight:700}
+.meta{padding:0 14px 14px;font-size:14px}
+.likes{font-weight:700;margin-bottom:4px}.time{color:#8e8e93;font-size:11px;margin-top:6px}
+.tabbar{position:fixed;left:50%;transform:translateX(-50%);bottom:0;width:min(430px,100%);display:flex;background:#000;border-top:1px solid #222;padding:8px 0 16px;z-index:6}
+.tabbar button{flex:1;color:#8e8e93;font-weight:700;font-size:11px}.tabbar button.on{color:#fff}
+.auth{min-height:100dvh;display:grid;place-items:center;padding:24px}
 .box{width:100%;text-align:center}
-.box h1{font-family:"Playfair Display",serif;font-size:46px;margin:0 0 6px}
-.box p{color:var(--muted);margin:0 0 22px;font-size:14px}
-.box input{width:100%;background:#121212;border:1px solid #2c2c2e;border-radius:12px;padding:13px 14px;margin:6px 0}
-.box input:focus{outline:1px solid #3a3a3c}
-.pri{width:100%;background:var(--blue);color:#fff;border-radius:12px;padding:12px;font-weight:700;margin-top:10px}
-.ghost{color:#d0d0d0;margin-top:18px;font-size:14px}
-.ghost b{color:var(--blue)}
-.err{color:var(--red);font-size:13px;min-height:18px;margin-top:6px}
-.search{margin:10px 12px;background:#1c1c1e;border-radius:11px;padding:10px 12px;width:calc(100% - 24px);border:0}
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
-.grid img,.tile{aspect-ratio:1;width:100%;object-fit:cover;background:#1a1a1a;border:0}
-.sheet{position:fixed;inset:0;background:#000c;z-index:50;display:flex;align-items:flex-end;justify-content:center}
-.panel{width:min(430px,100%);background:#161616;border-radius:18px 18px 0 0;padding:10px 14px calc(18px + env(safe-area-inset-bottom))}
-.handle{width:36px;height:4px;border-radius:99px;background:#3a3a3c;margin:6px auto 10px}
-.sheetbtn{display:block;width:100%;text-align:left;padding:14px 6px;border-bottom:1px solid #242424;font-weight:600}
-.reels{height:calc(100dvh - 58px);overflow-y:auto;scroll-snap-type:y mandatory}
-.reel{height:calc(100dvh - 58px);scroll-snap-align:start;position:relative;background:#111}
-.reel img{width:100%;height:100%;object-fit:cover}
-.reel .ov{position:absolute;left:14px;right:72px;bottom:28px;text-shadow:0 1px 8px #000}
-.reel .side{position:absolute;right:8px;bottom:90px;display:grid;gap:18px;text-align:center;font-size:12px}
-.prof{padding:12px 14px 80px}
-.stats{display:flex;gap:20px;margin-left:auto;font-size:12px;color:var(--muted);text-align:center}
-.stats b{color:#fff;display:block;font-size:16px}
+.box h1{font-family:"Playfair Display",serif;font-size:44px;margin:0 0 8px}
+.box p{color:#8e8e93}
+.box input,.field{width:100%;background:#121212;border:1px solid #2c2c2e;border-radius:12px;padding:13px;margin:6px 0}
+.pri{width:100%;background:#0095f6;color:#fff;border-radius:12px;padding:12px;font-weight:700;margin-top:10px}
+.ghost{margin-top:16px;color:#ccc}.ghost b{color:#0095f6}
+.err{color:#ed4956;font-size:13px;min-height:18px}
+.pad{padding:16px}.muted{color:#8e8e93;font-size:13px}
 .edit{border:1px solid #333;border-radius:10px;padding:8px 12px;font-weight:700;width:100%;margin:10px 0}
-.chat{padding:8px 12px 96px}
-.bubble{max-width:78%;padding:9px 12px;border-radius:18px;margin:6px 0;background:#1c1c1e;font-size:14px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}.grid img{aspect-ratio:1;width:100%;object-fit:cover}
+.chat{padding:10px 12px 90px}
+.bubble{max-width:78%;padding:9px 12px;border-radius:16px;margin:6px 0;background:#1c1c1e}
 .bubble.me{background:#00376b;margin-left:auto}
-.composer{position:fixed;left:50%;transform:translateX(-50%);bottom:58px;width:min(430px,100%);display:flex;gap:8px;padding:8px 10px;background:#000;border-top:1px solid var(--line)}
-.composer input{flex:1;background:#1c1c1e;border:0;border-radius:22px;padding:10px 14px}
-.admin{padding:12px 12px 80px}
-.admin table{width:100%;border-collapse:collapse;font-size:13px}
-.admin td,.admin th{border-bottom:1px solid #222;padding:10px 4px;text-align:left}
-.pill{background:#1c1c1e;border-radius:8px;padding:6px 8px;font-size:12px;margin:2px}
-.row{display:flex;align-items:center}
-.pad{padding:16px}
-.muted{color:var(--muted);font-size:13px}
-.badge{display:inline-grid;place-items:center;width:13px;height:13px;border-radius:50%;background:var(--blue);color:#fff;font-size:8px;margin-left:4px}
-.empty{padding:40px 20px;text-align:center;color:var(--muted)}
-.list{padding-bottom:80px}
+.composer{position:fixed;left:50%;transform:translateX(-50%);bottom:58px;width:min(430px,100%);display:flex;gap:8px;padding:8px;background:#000}
+.composer input{flex:1;background:#1c1c1e;border-radius:20px;padding:10px 12px}
+.sheet{position:fixed;inset:0;background:#000c;z-index:8;display:flex;align-items:flex-end}
+.panel{width:min(430px,100%);margin:0 auto;background:#161616;border-radius:16px 16px 0 0;padding:14px 14px 28px}
+.sheetbtn{display:block;width:100%;text-align:left;padding:14px 4px;border-bottom:1px solid #2a2a2a;font-weight:600}
+.stats{display:flex;gap:16px;margin-left:auto;text-align:center;font-size:12px;color:#8e8e93}
+.stats b{display:block;color:#fff;font-size:16px}
+.pill{background:#1c1c1e;border-radius:8px;padding:6px 8px;margin:2px;font-size:12px}
 </style>
 </head>
 <body>
 <div id="app"></div>
-<script src="./app.js?v=5"></script>
+<script>
+const KEY="pulse.ig.v6";
+const CODE="FERRARI1";
+const $=function(s){return document.querySelector(s)};
+const now=function(){return Date.now()};
+function ago(t){var s=Math.max(1,((now()-t)/1000)|0);if(s<60)return s+"s";var m=(s/60)|0;if(m<60)return m+"m";var h=(m/60)|0;if(h<24)return h+"h";return ((h/24)|0)+"d"}
+function col(h){return "hsl("+h+" 62% 40%)"}
+function pic(s){return "https://picsum.photos/seed/"+s+"/900/900"}
+function esc(s){s=String(s||"");var o="";for(var i=0;i<s.length;i++){var c=s.charAt(i);if(c==="<")o+="<";else if(c===">")o+=">";else o+=c}return o}
+function seed(){function U(id,username,display,h,bio,ver){return {id:id,username:username,display:display,pass:"pulse123",bio:bio,h:h,ver:!!ver,followers:80+h,following:40,blocked:false}}var users=[U("you","you","Jordan Hale",18,"Sunsets and trails."),U("nova","nova","Nova Chen",262,"Night sky diaries.",1),U("milo","milo","Milo Park",32,"Bread and broth.",1),U("rio","rio","Rio Alvarez",198,"Tiny games.",1),U("iris","iris","Iris Holm",280,"Type and paper.",1),U("sage","sage","Sage Okonkwo",148,"Quiet miles.")];function P(id,by,text,seedName,hours,likes){return {id:id,by:by,text:text,img:pic(seedName),t:now()-hours*3600000,likes:likes,comments:[{by:"you",text:"This is beautiful."}],saved:[]}}return {users:users,follows:[["you","nova"],["you","milo"],["you","iris"]],posts:[P("p1","nova","Perseids over the ridge.","stars1",2,["you","iris"]),P("p2","milo","Sunday loaf.","bread1",5,["you"]),P("p3","iris","Harbor Grotesk specimen.","type1",9,["you"]),P("p4","sage","Fog was the view.","trail1",14,["you"]),P("p5","rio","Lighthouse tileset.","pixel1",20,["you"])],stories:users.map(function(u){return {id:"s"+u.id,by:u.id,img:"https://picsum.photos/seed/st"+u.id+"/720/1280",seen:false}}),convos:[{id:"c1",with:"nova",msgs:[{by:"nova",text:"Did you catch the north sky?"},{by:"you",text:"Two meteors."}]}],notes:[{id:1,text:"nova liked your post",read:false}],session:null,owner:false}}
+function load(){try{var x=JSON.parse(localStorage.getItem(KEY));if(x&&x.users)return x}catch(e){}var d=seed();save(d);return d}
+function save(d){localStorage.setItem(KEY,JSON.stringify(d))}
+var db=load(),route="home",authPage="login",sheet=null,openStory=null,commentId=null;
+function me(){return db.users.find(function(u){return u.id===db.session})}
+function usr(id){return db.users.find(function(u){return u.id===id})}
+function go(r){route=r;sheet=null;openStory=null;commentId=null;draw()}
+function av(u,sz){sz=sz||36;return '<div class="av" style="width:'+sz+'px;height:'+sz+'px;background:'+col(u.h)+'">'+(u.display||u.username||"?")[0].toUpperCase()+'</div>'}
+function following(id){return db.follows.some(function(f){return f[0]===me().id&&f[1]===id})}
+function login(){var id=($("#id").value||"").trim().toLowerCase();var pw=$("#pw").value||"";var u=db.users.find(function(x){return x.username===id});if(!u||u.pass!==pw){$("#err").textContent="Wrong username or password";return}if(u.blocked){$("#err").textContent="Account suspended";return}db.session=u.id;save(db);go("home")}
+function signup(){var raw=($("#sid").value||"").trim().toLowerCase();var id=raw.replace(/[^a-z0-9_]/g,"");var pw=$("#spw").value||"";var pw2=$("#spw2").value||"";var name=(( $("#sname").value||"").trim())||id;if(id.length<3){$("#err").textContent="Username needs 3+ letters";return}if(id!==raw){$("#err").textContent="Use letters, numbers or _";return}if(pw.length<6){$("#err").textContent="Password needs 6+ characters";return}if(pw!==pw2){$("#err").textContent="Passwords do not match";return}if(db.users.some(function(u){return u.username===id})){$("#err").textContent="Username taken";return}var u={id:"u"+now(),username:id,display:name,pass:pw,bio:"New on Pulse",h:(Math.random()*360)|0,ver:false,followers:0,following:0,blocked:false};db.users.push(u);db.session=u.id;save(db);go("home")}
+function like(id){var p=db.posts.find(function(x){return x.id===id});var i=p.likes.indexOf(me().id);if(i<0)p.likes.push(me().id);else p.likes.splice(i,1);save(db);draw()}
+function saveP(id){var p=db.posts.find(function(x){return x.id===id});var i=p.saved.indexOf(me().id);if(i<0)p.saved.push(me().id);else p.saved.splice(i,1);save(db);draw()}
+function addComment(){var t=($("#ctext").value||"").trim();if(!t||!commentId)return;db.posts.find(function(x){return x.id===commentId}).comments.push({by:me().id,text:t});save(db);draw()}
+function follow(id){if(following(id))db.follows=db.follows.filter(function(f){return !(f[0]===me().id&&f[1]===id)});else db.follows.push([me().id,id]);save(db);draw()}
+function publish(){var t=($("#cap").value||"").trim()||"New Pulse";var f=$("#file");function finish(img){db.posts.unshift({id:"p"+now(),by:me().id,text:t,img:img,t:now(),likes:[],comments:[],saved:[]});save(db);go("home")}if(f&&f.files&&f.files[0]){var r=new FileReader();r.onload=function(){finish(r.result)};r.readAsDataURL(f.files[0])}else finish(pic("new"+now()))}
+function send(){var t=($("#mtext").value||"").trim();if(!t)return;db.convos[0].msgs.push({by:me().id,text:t});save(db);draw()}
+function unlock(){var v=($("#oc").value||"").trim();if(v===CODE){db.owner=true;save(db);draw()}else $("#err").textContent="Incorrect code"}
+function verify(id){usr(id).ver=!usr(id).ver;save(db);draw()}
+function wipe(id){db.posts=db.posts.filter(function(p){return p.by!==id});save(db);draw()}
+function ban(id){usr(id).blocked=!usr(id).blocked;save(db);draw()}
+function kick(id){if(id===me().id)return;db.users=db.users.filter(function(u){return u.id!==id});db.posts=db.posts.filter(function(p){return p.by!==id});save(db);draw()}
+function postHTML(p){var a=usr(p.by);if(!a)return "";var liked=p.likes.indexOf(me().id)>=0;return '<article class="post"><div class="ph">'+av(a)+'<div class="nm">'+esc(a.display)+'<small>@'+esc(a.username)+'</small></div></div><div class="media" onclick="like(\''+p.id+'\')"><img src="'+p.img+'" alt=""></div><div class="acts"><button onclick="like(\''+p.id+'\')">'+(liked?"Liked":"Like")+' '+p.likes.length+'</button><button onclick="commentId=\''+p.id+'\';draw()">Comments</button><button onclick="saveP(\''+p.id+'\')">'+(p.saved.indexOf(me().id)>=0?"Saved":"Save")+'</button></div><div class="meta"><div class="likes">'+p.likes.length+' likes</div><div><b>'+esc(a.username)+'</b> '+esc(p.text)+'</div><div class="time">'+ago(p.t)+' ago</div></div></article>'}
+function homeView(){return '<div class="top"><h1 class="logo">Pulse</h1><button onclick="go(\'notes\')">Activity</button></div><div class="stories">'+db.stories.map(function(s){var u=usr(s.by);if(!u)return "";return '<button class="st" onclick="openStory=\''+s.id+'\';draw()"><div class="ring"><i style="background:'+col(u.h)+'"></i></div>'+(s.by===me().id?"Your story":u.username)+'</button>'}).join("")+'</div>'+db.posts.map(postHTML).join("")}
+function searchView(){return '<div class="top"><h1 class="logo">Explore</h1></div><div class="grid">'+db.posts.map(function(p){return '<img src="'+p.img+'">'}).join("")+'</div>'+db.users.filter(function(u){return u.id!==me().id}).map(function(u){return '<div class="ph">'+av(u)+'<div class="nm">'+esc(u.display)+'<small>@'+esc(u.username)+'</small></div><button class="pri" style="width:auto;padding:7px 12px;margin:0 0 0 auto" onclick="follow(\''+u.id+'\')">'+(following(u.id)?"Following":"Follow")+'</button></div>'}).join("")}
+function createView(){return '<div class="top"><h1 class="logo">New post</h1></div><div class="pad"><input id="file" type="file" accept="image/*"><textarea id="cap" class="field" placeholder="Write a caption..." style="min-height:110px"></textarea><button class="pri" onclick="publish()">Share</button></div>'}
+function notesView(){return '<div class="top"><button onclick="go(\'home\')">Back</button><h1 class="logo">Activity</h1><span></span></div>'+db.notes.map(function(n){return '<div class="ph"><div class="nm">'+esc(n.text)+'</div></div>'}).join("")}
+function messagesView(){var c=db.convos[0];var other=usr(c.with);return '<div class="top"><button onclick="go(\'home\')">Back</button><div class="nm">'+esc(other.display)+'<small>Active now</small></div><span></span></div><div class="chat">'+c.msgs.map(function(m){return '<div class="bubble '+(m.by===me().id?"me":"")+'">'+esc(m.text)+'</div>'}).join("")+'</div><div class="composer"><input id="mtext" placeholder="Message..."><button class="pri" style="width:auto;margin:0;padding:10px 12px" onclick="send()">Send</button></div>'}
+function profileView(){var u=me();var posts=db.posts.filter(function(p){return p.by===u.id});return '<div class="top"><h1 class="logo">'+esc(u.username)+'</h1><button onclick="sheet=\'menu\';draw()">Menu</button></div><div class="pad"><div class="ph">'+av(u,72)+'<div class="stats"><div><b>'+posts.length+'</b>posts</div><div><b>'+u.followers+'</b>followers</div><div><b>'+u.following+'</b>following</div></div></div><div class="nm">'+esc(u.display)+'<small>'+esc(u.bio)+'</small></div><button class="edit" onclick="sheet=\'edit\';draw()">Edit profile</button><div class="grid">'+posts.map(function(p){return '<img src="'+p.img+'">'}).join("")+'</div></div>'}
+function adminView(){if(!db.owner)return '<div class="top"><button onclick="go(\'profile\')">Back</button><h1 class="logo">Owner tools</h1><span></span></div><div class="pad"><p class="muted">This area is private. Enter the owner code.</p><input id="oc" class="field" type="password" placeholder="Owner code" autocomplete="off"><div class="err" id="err"></div><button class="pri" onclick="unlock()">Unlock</button></div>';return '<div class="top"><button onclick="go(\'profile\')">Back</button><h1 class="logo">Admin</h1><span></span></div><div class="pad"><p class="muted">'+db.users.length+' members</p>'+db.users.map(function(u){return '<div class="ph">'+av(u)+'<div class="nm">@'+esc(u.username)+(u.blocked?" suspended":"")+'</div></div><button class="pill" onclick="verify(\''+u.id+'\')">Verify</button><button class="pill" onclick="wipe(\''+u.id+'\')">Wipe</button><button class="pill" onclick="ban(\''+u.id+'\')">Suspend</button><button class="pill" onclick="kick(\''+u.id+'\')">Kick</button>'}).join("")+'</div>'}
+function overlay(){if(openStory){var s=db.stories.find(function(x){return x.id===openStory});return '<div class="sheet" onclick="openStory=null;draw()"><img src="'+s.img+'" style="width:min(430px,100%);height:100%;object-fit:cover;margin:0 auto"></div>'}if(commentId){var p=db.posts.find(function(x){return x.id===commentId});return '<div class="sheet" onclick="if(event.target===this){commentId=null;draw()}"><div class="panel"><h3>Comments</h3>'+p.comments.map(function(c){var a=usr(c.by)||{username:"user",display:"?",h:0};return '<div class="ph">'+av(a)+'<div class="nm">@'+esc(a.username)+'<small>'+esc(c.text)+'</small></div></div>'}).join("")+'<input id="ctext" class="field" placeholder="Add a comment..."><button class="pri" onclick="addComment()">Post</button></div></div>'}if(sheet==="menu")return '<div class="sheet" onclick="if(event.target===this){sheet=null;draw()}"><div class="panel"><button class="sheetbtn" onclick="sheet=\'edit\';draw()">Edit profile</button><button class="sheetbtn" onclick="go(\'admin\')">Owner tools</button><button class="sheetbtn" onclick="db.session=null;save(db);authPage=\'login\';draw()">Log out</button><button class="sheetbtn" onclick="sheet=null;draw()">Cancel</button></div></div>';if(sheet==="edit")return '<div class="sheet" onclick="if(event.target===this){sheet=null;draw()}"><div class="panel"><h3>Edit profile</h3><input id="dn" class="field" value="'+esc(me().display)+'"><textarea id="bio" class="field" style="min-height:80px">'+esc(me().bio)+'</textarea><button class="pri" onclick="me().display=$(\'#dn\').value.trim()||me().username;me().bio=$(\'#bio\').value;save(db);sheet=null;draw()">Save</button></div></div>';return ""}
+function authView(){if(authPage==="signup")return '<div class="auth"><div class="box"><h1>Pulse</h1><p>Create your account</p><input id="sname" placeholder="Name"><input id="sid" placeholder="Username"><input id="spw" type="password" placeholder="Password"><input id="spw2" type="password" placeholder="Confirm password"><div class="err" id="err"></div><button class="pri" onclick="signup()">Create account</button><button class="ghost" onclick="authPage=\'login\';draw()">Have an account? <b>Log in</b></button></div></div>';return '<div class="auth"><div class="box"><h1>Pulse</h1><p>Welcome back</p><input id="id" placeholder="Username"><input id="pw" type="password" placeholder="Password"><div class="err" id="err"></div><button class="pri" onclick="login()">Log in</button><button class="ghost" onclick="authPage=\'signup\';draw()">New here? <b>Create account</b></button></div></div>'}
+function draw(){var root=$("#app");if(!db.session){root.innerHTML=authView();return}var screens={home:homeView,search:searchView,create:createView,profile:profileView,notes:notesView,messages:messagesView,admin:adminView};var body=(screens[route]||homeView)();var tabs=[["home","Home"],["search","Search"],["create","New"],["messages","Chats"],["profile","You"]];root.innerHTML=body+'<nav class="tabbar">'+tabs.map(function(x){return '<button class="'+(route===x[0]?"on":"")+'" onclick="go(\''+x[0]+'\')">'+x[1]+'</button>'}).join("")+'</nav>'+overlay()}
+try{draw()}catch(e){document.getElementById("app").innerHTML='<div class="auth"><div class="box"><h1>Pulse</h1><p>'+e.message+'</p></div></div>'}
+</script>
 </body>
 </html>
