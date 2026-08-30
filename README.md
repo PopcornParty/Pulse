@@ -1,22 +1,21 @@
 # Pulse
 
-Mobile-first social app: feed, stories, explore, reels, DMs, profile, and an owner admin panel.
+Mobile-first social app: feed, stories, explore, reels, DMs, profile, and a private owner panel.
 
-Live (after GitHub Pages is on):
+Live:
 https://popcornparty.github.io/Pulse/
 
-## Login
+## Log in
+Use a username and password only. No email.
+
+Demo account:
 - Username: `you`
 - Password: `pulse123`
 
-## Admin panel
-1. Log in
-2. Tap **You** (bottom right)
-3. Tap the menu icon (top right)
-4. Tap **Owner desk / Admin panel**
-5. Enter code: `FERRARI1`
+Or tap **Create account** for a new username and password. After signup you are logged in.
 
-From there you can view every member, verify, wipe posts, or suspend an account.
+## Owner tools
+Profile → menu → Owner tools. The code is not shown in the app.
 
 ## Pages setup (iPhone)
 Repo → … → Settings → Pages → Deploy from a branch → `main` / `/docs` → Save
