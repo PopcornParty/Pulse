@@ -16,6 +16,7 @@ function me(){return db.users.find(function(u){return u.id===db.session})}
 function usr(id){return db.users.find(function(u){return u.id===id})}
 function go(r){route=r;sheet=null;openStory=null;commentId=null;if(r!=="profile")viewUser=null;draw()}
 function av(u,sz){sz=sz||36;if(u&&u.pic)return '<img class="av" alt="" src="'+u.pic+'" style="width:'+sz+'px;height:'+sz+'px;object-fit:cover">';return '<div class="av" style="width:'+sz+'px;height:'+sz+'px;background:'+col((u&&u.h)||0)+'">'+((u&&(u.display||u.username))||"?")[0].toUpperCase()+'</div>'}
+function badge(u){return (u&&u.ver)?'<span class="vbadge" title="Verified">\u2713</span>':""}
 function following(id){return db.follows.some(function(f){return f[0]===me().id&&f[1]===id})}
 function openProfile(id){viewUser=id;route="profile";sheet=null;draw()}
 function dirty(){save(db);draw()}
