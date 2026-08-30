@@ -24,5 +24,5 @@ if(typeof overlay==="function"){
     return html;
   };
 }
-if(typeof draw==="function")try{draw()}catch(e){}
+if(typeof draw==="function")try{if(!(document.activeElement&&(document.activeElement.tagName==="INPUT"||document.activeElement.tagName==="TEXTAREA")))draw()}catch(e){}
 })();
