@@ -44,7 +44,7 @@ button{cursor:pointer}img{display:block;max-width:100%}
 .pad{padding:16px}.muted{color:var(--muted);font-size:13px}
 .edit{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-weight:700;width:100%;margin:8px 0}
 .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}.grid img{aspect-ratio:1;width:100%;object-fit:cover;background:#111}
-.chat{padding:10px 12px 90px}
+.chat{padding:10px 12px 90px;max-height:calc(100dvh - 180px);overflow-y:auto}
 .bubble{max-width:78%;padding:9px 12px;border-radius:16px;margin:6px 0;background:var(--bubble)}
 .bubble.me{background:var(--me);margin-left:auto}
 .composer{position:fixed;left:50%;transform:translateX(-50%);bottom:58px;width:min(430px,100%);display:flex;gap:8px;padding:8px;background:var(--bg)}
@@ -65,7 +65,7 @@ button{cursor:pointer}img{display:block;max-width:100%}
 .swatch.on{border-color:var(--accent)}
 .vbadge{display:inline-flex;align-items:center;justify-content:center;width:15px;height:15px;margin-left:5px;border-radius:50%;background:#0095f6;color:#fff;font-size:10px;font-weight:900;line-height:1;vertical-align:middle}
 .cbadge{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;margin-left:4px;border-radius:50%;background:linear-gradient(135deg,#ffe082,#f5a623);box-shadow:0 0 0 1px #c98900;font-size:10px;line-height:1;vertical-align:middle}
-html.light{--bg:#fafafa;--fg:#111;--muted:#6e6e6e;--line:#e6e6e6;--card:#fff;--panel:#fff;--bubble:#efefef;--me:#d7ecff}
+html.light{--bg:#fafafa;--fg:#111;--muted:#6e6e73;--line:#e6e6e6;--card:#fff;--panel:#fff;--bubble:#efefef;--me:#d7ecff}
 html.skin-classic{--accent:#0095f6;--accent2:#4cc9f0;--me:#00376b}
 html.light.skin-classic{--me:#d7ecff}
 html.skin-ocean{--bg:#04131c;--accent:#38bdf8;--accent2:#2563eb;--me:#0b3b5a;--card:#0b1c26;--panel:#0d2230}
@@ -74,25 +74,26 @@ html.skin-sunset{--bg:#1a0e14;--accent:#fb7185;--accent2:#f59e0b;--me:#7a2e3a;--
 html.skin-grape{--bg:#120816;--accent:#c084fc;--accent2:#7c3aed;--me:#4c1d6b;--card:#1b0f24;--panel:#22142d}
 html.skin-forest{--bg:#07140d;--accent:#34d399;--accent2:#059669;--me:#14532d;--card:#0d1f16;--panel:#12261b}
 html.skin-aurora{--bg:#071018;--accent:#22d3ee;--accent2:#a78bfa;--me:#164e63;--card:#0c1a24;--panel:#10202b}
-html.light.skin-ocean,html.light.skin-ember,html.light.skin-sunset,html.light.skin-grape,html.light.skin-forest,html.light.skin-aurora{--bg:#fafafa;--fg:#111;--muted:#6e6e6e;--line:#e6e6e6;--card:#fff;--panel:#fff;--bubble:#efefef}
+html.light.skin-ocean,html.light.skin-ember,html.light.skin-sunset,html.light.skin-grape,html.light.skin-forest,html.light.skin-aurora{--bg:#fafafa;--fg:#111;--muted:#6e6e73;--line:#e6e6e6;--card:#fff;--panel:#fff;--bubble:#efefef}
 </style>
 </head>
 <body>
 <div id="app"><div class="auth"><div class="box"><h1>Pulse</h1><p>Loading…</p></div></div></div>
-<script src="./pulse-a.js?v=32"></script>
-<script src="./pulse-b1.js?v=32"></script>
-<script src="./pulse-b2.js?v=32"></script>
-<script src="./pulse-c.js?v=32"></script>
-<script src="./pulse-d.js?v=32"></script>
-<script src="./pulse-e.js?v=32"></script>
-<script src="./pulse-f.js?v=32"></script>
-<script src="./pulse-g.js?v=32"></script>
-<script src="./pulse-h.js?v=32"></script>
-<script src="./pulse-i.js?v=32"></script>
-<script src="./pulse-j.js?v=32"></script>
-<script src="./pulse-k.js?v=32"></script>
-<script src="./pulse-l.js?v=32"></script>
-<script src="./pulse-m.js?v=32"></script>
-<script src="./pulse-n.js?v=32"></script>
+<script src="./pulse-a.js?v=34"></script>
+<script src="./pulse-b1.js?v=34"></script>
+<script src="./pulse-b2.js?v=34"></script>
+<script src="./pulse-c.js?v=34"></script>
+<script src="./pulse-d.js?v=34"></script>
+<script src="./pulse-e.js?v=34"></script>
+<script src="./pulse-f.js?v=34"></script>
+<script src="./pulse-g.js?v=34"></script>
+<script src="./pulse-h.js?v=34"></script>
+<script src="./pulse-i.js?v=34"></script>
+<script src="./pulse-j.js?v=34"></script>
+<script src="./pulse-k.js?v=34"></script>
+<script src="./pulse-l.js?v=34"></script>
+<script src="./pulse-m.js?v=34"></script>
+<script src="./pulse-n.js?v=34"></script>
+<script src="./pulse-o.js?v=34"></script>
 </body>
 </html>
