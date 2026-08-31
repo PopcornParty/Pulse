@@ -8,21 +8,22 @@ function follow(id){if(id===me().id)return;if(following(id))db.follows=db.follow
 function filtered(text){var w=(db.settings.wordFilter||"").split(",").map(function(x){return x.trim().toLowerCase()}).filter(Boolean);var t=text;w.forEach(function(x){if(x)t=t.split(x).join("***")});return t}
 var posting=false;
 function publish(){if(posting)return;var cap=$("#cap");var t=filtered(((cap&&cap.value)||"").trim());if(!t){if($("#errp"))$("#errp").textContent="Write a caption first";return}posting=true;var b=$("#shareBtn");if(b){b.disabled=true;b.textContent="Sharing..."}var f=$("#file");function finish(img){db.posts.unshift({id:"p"+now(),by:me().id,text:t,img:img,t:now(),likes:[],comments:[],saved:[],hidden:false,pinned:false,featured:false,locked:false,views:1});logA("post by @"+me().username);try{save(db)}catch(e){}posting=false;go("home")}if(f&&f.files&&f.files[0]){shrinkImg(f.files[0],function(url){finish(url)})}else finish(pic("new"+now()))}
-function send(){var box=$("#mtext");var t=(box&&box.value||"").trim();if(!t||!chatWith)return;if(!db.convos)db.convos=[];var c=db.convos.find(function(x){return x.with===chatWith});if(!c){c={id:"c"+now(),with:chatWith,msgs:[]};db.convos.push(c)}c.msgs.push({by:me().id,text:t,t:now()});save(db);draw()}
+var sending=false,lastSendKey="",lastSendAt=0;
+function send(){if(sending)return;var box=$("#mtext");var t=(box&&box.value||"").trim();if(!t||!chatWith||!me())return;var text=filtered(t);var key=me().id+"|"+chatWith+"|"+text;var n=now();if(key===lastSendKey&&n-lastSendAt<4000){if(box)box.value="";return}sending=true;lastSendKey=key;lastSendAt=n;if(box)box.value="";var btn=$("#sendBtn");if(btn){btn.disabled=true;btn.textContent="Sent"}if(!db.convos)db.convos=[];var c=db.convos.find(function(x){return x.with===chatWith});if(!c){c={id:"c"+n,with:chatWith,msgs:[]};db.convos.push(c)}var last=(c.msgs||[])[c.msgs.length-1];if(last&&last.by===me().id&&last.text===text&&n-(last.t||0)<4000){sending=false;if(btn){btn.disabled=false;btn.textContent="Send"}return}var msg={id:"m"+n+"-"+me().id,by:me().id,text:text,t:n};c.msgs.push(msg);if(!db.threads)db.threads=[];var pair=[me().id,chatWith].sort().join("|");var th=db.threads.find(function(x){return x.pair===pair});if(!th){th={pair:pair,msgs:[]};db.threads.push(th)}th.msgs.push(msg);save(db);draw();setTimeout(function(){sending=false},900)}
 function unlock(){var box=$("#oc");var v=((box&&box.value)||"").trim();if($("#err")&&v!==CODE){$("#err").textContent="Incorrect code";return}if(v!==CODE)return;ownerOk=true;db.owner=true;logA("owner unlocked");save(db);draw()}
 function verify(id){if(!usr(id))return;usr(id).ver=true;logA("verify @"+usr(id).username);dirty()}
 function unverify(id){if(!usr(id))return;usr(id).ver=false;logA("unverify @"+usr(id).username);dirty()}
-function wipe(id){db.posts=db.posts.filter(function(p){return p.by!==id});logA("wipe posts "+id);dirty()}
+function wipe(id){if(!db.deletedPosts)db.deletedPosts=[];db.posts.forEach(function(p){if(p.by===id)db.deletedPosts.push(p.id)});db.posts=db.posts.filter(function(p){return p.by!==id});logA("wipe posts "+id);dirty()}
 function ban(id){usr(id).blocked=!usr(id).blocked;logA((usr(id).blocked?"ban ":"restore ")+usr(id).username);dirty()}
 function shadow(id){usr(id).shadow=!usr(id).shadow;dirty()}
 function staff(id){usr(id).staff=!usr(id).staff;usr(id).role=usr(id).staff?"staff":"member";dirty()}
-function kick(id){if(id===me().id)return;var name=usr(id)&&usr(id).username;db.users=db.users.filter(function(u){return u.id!==id});db.posts=db.posts.filter(function(p){return p.by!==id});db.follows=db.follows.filter(function(f){return f[0]!==id&&f[1]!==id});logA("kick @"+name);dirty()}
+function kick(id){if(id===me().id)return;var name=usr(id)&&usr(id).username;if(!db.kicked)db.kicked=[];db.kicked.push(id);db.users=db.users.filter(function(u){return u.id!==id});db.posts=db.posts.filter(function(p){return p.by!==id});db.follows=db.follows.filter(function(f){return f[0]!==id&&f[1]!==id});logA("kick @"+name);dirty()}
 function resetPass(id){usr(id).pass="pulse123";logA("reset password @"+usr(id).username);alert("Password reset to pulse123");dirty()}
 function hideP(id){var p=db.posts.find(function(x){return x.id===id});p.hidden=!p.hidden;dirty()}
 function pinP(id){var p=db.posts.find(function(x){return x.id===id});p.pinned=!p.pinned;dirty()}
 function featP(id){var p=db.posts.find(function(x){return x.id===id});p.featured=!p.featured;dirty()}
 function lockP(id){var p=db.posts.find(function(x){return x.id===id});p.locked=!p.locked;dirty()}
-function delP(id){db.posts=db.posts.filter(function(p){return p.id!==id});dirty()}
+function delP(id){if(!db.deletedPosts)db.deletedPosts=[];db.deletedPosts.push(id);db.posts=db.posts.filter(function(p){return p.id!==id});dirty()}
 function reportP(id){db.reports.unshift({id:"r"+now(),post:id,by:me().id,t:now(),open:true});logA("report "+id);alert("Reported");dirty()}
 function broadcast(){var t=prompt("Broadcast to every inbox");if(!t)return;db.notes.unshift({id:now(),text:"Pulse: "+t,read:false});logA("broadcast");dirty()}
 function official(){var t=prompt("Official Pulse post");if(!t)return;db.posts.unshift({id:"p"+now(),by:me().id,text:t,img:pic("official"+now()),t:now(),likes:[],comments:[],saved:[],hidden:false,pinned:true,featured:true,locked:false,views:1});dirty()}
