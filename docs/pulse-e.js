@@ -33,11 +33,13 @@ if(!window.pulseTap){
     if(!t)return;
     var btn=t.closest("[data-act]");
     if(btn){
+      var act=btn.getAttribute("data-act");
+      var id=btn.getAttribute("data-id");
+      var feed=["like","save","report","comments","profile","share","cpost"];
+      if(feed.indexOf(act)<0)return;
       e.preventDefault();
       e.stopPropagation();
       window.lastType=0;
-      var act=btn.getAttribute("data-act");
-      var id=btn.getAttribute("data-id");
       if(act==="like"&&typeof like==="function")like(id);
       else if(act==="save"&&typeof saveP==="function")saveP(id);
       else if(act==="report"&&typeof reportP==="function")reportP(id);
@@ -56,12 +58,12 @@ window.postHTML=function(p){
   var liked=p.likes.indexOf(me().id)>=0;
   var saved=p.saved.indexOf(me().id)>=0;
   var src=p.img&&String(p.img)||pic(p.id||"x");
-  return '<article class="post"><div class="ph" data-act="profile" data-id="'+esc(a.id)+'">'+av(a)+'<div class="nm">'+esc(a.display)+badge(a)+(p.pinned?" pinned":"")+'<small>@'+esc(a.username)+'</small></div></div><div class="media" data-act="like" data-id="'+esc(p.id)+'"><img src="'+src+'" alt="" onerror="this.onerror=null;this.src=\''+FALL+'\'"></div><div class="acts"><button data-act="like" data-id="'+esc(p.id)+'">'+(liked?"Liked":"Like")+" "+p.likes.length+'</button><button data-act="comments" data-id="'+esc(p.id)+'">Comments</button><button data-act="save" data-id="'+esc(p.id)+'">'+(saved?"Saved":"Save")+'</button><button data-act="report" data-id="'+esc(p.id)+'">Report</button></div><div class="meta"><div class="likes">'+p.likes.length+" likes \u00b7 "+(p.views||0)+' views</div><div><b data-act="profile" data-id="'+esc(a.id)+'">'+esc(a.username)+"</b> "+esc(p.text)+'</div><div class="time">'+ago(p.t)+" ago</div></div></article>";
+  return '<article class="post"><div class="ph" data-act="profile" data-id="'+esc(a.id)+'">'+av(a)+'<div class="nm">'+esc(a.display)+badge(a)+(p.pinned?" pinned":"")+'<small>@'+esc(a.username)+'</small></div></div><div class="media" data-act="like" data-id="'+esc(p.id)+'"><img src="'+src+'" alt="" onerror="this.onerror=null;this.src=\''+FALL+'\'"></div><div class="acts"><button data-act="like" data-id="'+esc(p.id)+'">'+(liked?"Liked":"Like")+" "+p.likes.length+'</button><button data-act="comments" data-id="'+esc(p.id)+'">Comments</button><button data-act="save" data-id="'+esc(p.id)+'">'+(saved?"Saved":"Save")+'</button><button data-act="report" data-id="'+esc(p.id)+'">Report</button></div><div class="meta"><div class="likes">'+p.likes.length+" likes · "+(p.views||0)+' views</div><div><b data-act="profile" data-id="'+esc(a.id)+'">'+esc(a.username)+"</b> "+esc(p.text)+'</div><div class="time">'+ago(p.t)+" ago</div></div></article>";
 };
 if(typeof draw==="function"){
   var _draw=draw;
   window.draw=function(){
-    if(typingNow()){window.needDraw=true;return}
+    if(typingNow()&&typeof route!=="undefined"&&route!=="admin"){window.needDraw=true;return}
     window.needDraw=false;
     if(typeof recount==="function")recount();
     _draw();
